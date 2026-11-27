@@ -1,0 +1,64 @@
+services:
+  users-api:
+    build:
+      context: ./users-api
+      dockerfile: Dockerfile
+    container_name: users-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_PATH=/data/users.db
+    volumes:
+      - users_data:/data
+    restart: unless-stopped
+
+  auth-api:
+    build:
+      context: ./auth-api
+      dockerfile: Dockerfile
+    container_name: auth-api
+    ports:
+      - "8001:8001"
+    environment:
+      - DB_PATH=/data/auth.db
+    volumes:
+      - auth_data:/data
+    restart: unless-stopped
+
+  orders-api:
+    build:
+      context: ./orders-api
+      dockerfile: Dockerfile
+    container_name: orders-api
+    ports:
+      - "8002:8002"
+    environment:
+      - DB_PATH=/data/orders.db
+      - PORT=8002
+    volumes:
+      - orders_data:/data
+    restart: unless-stopped
+
+  products-api:
+    build:
+      context: ./products-api
+      dockerfile: Dockerfile
+    container_name: products-api
+    ports:
+      - "8003:8003"
+    environment:
+      - DB_PATH=/data/products.db
+      - PORT=8003
+    volumes:
+      - products_data:/data
+    restart: unless-stopped
+
+volumes:
+  users_data:
+    driver: local
+  auth_data:
+    driver: local
+  orders_data:
+    driver: local
+  products_data:
+    driver: local
