@@ -11,6 +11,12 @@ services:
     volumes:
       - users_data:/data
     restart: unless-stopped
+    mem_limit: 150m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   auth-api:
     build:
@@ -21,9 +27,16 @@ services:
       - "8001:8001"
     environment:
       - DB_PATH=/data/auth.db
+      - JAVA_TOOL_OPTIONS=-XX:+UseSerialGC -XX:MaxRAMPercentage=75.0 -Xss256k
     volumes:
       - auth_data:/data
     restart: unless-stopped
+    mem_limit: 384m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   orders-api:
     build:
@@ -38,6 +51,12 @@ services:
     volumes:
       - orders_data:/data
     restart: unless-stopped
+    mem_limit: 64m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   products-api:
     build:
@@ -52,6 +71,12 @@ services:
     volumes:
       - products_data:/data
     restart: unless-stopped
+    mem_limit: 150m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   users_data:
